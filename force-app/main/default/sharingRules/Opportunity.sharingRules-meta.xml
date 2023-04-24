@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
-    <sharingCriteriaRules>
+    <!-- <sharingCriteriaRules>
         <fullName>Share_Won_Opportunities_with_Account_Receivable</fullName>
         <accessLevel>Edit</accessLevel>
         <label>Share Won Opportunities with Account Receivable</label>
@@ -13,7 +13,7 @@
             <value>True</value>
         </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
-    </sharingCriteriaRules>
+    </sharingCriteriaRules> -->
     <sharingOwnerRules>
         <fullName>Opportunity_Sharing</fullName>
         <accessLevel>Edit</accessLevel>
