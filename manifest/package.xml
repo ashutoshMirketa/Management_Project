@@ -5,5 +5,10 @@
 		<members>Salesperson</members>
 		<name>Profile</name>
 	</types>
+	<types>
+		<members>Manager</members>
+		<members>Salesperson</members>
+		<name>Role</name>
+	</types>
 	<version>55.0</version>
 </Package>
