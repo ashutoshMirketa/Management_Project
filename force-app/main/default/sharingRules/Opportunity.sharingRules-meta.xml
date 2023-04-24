@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <!-- <sharingCriteriaRules>
+        <fullName>Share_Won_Opportunities_with_Account_Receivable</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Share Won Opportunities with Account Receivable</label>
+        <sharedTo>
+            <role>Accounts_Receivable</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>IsWon</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules> -->
+    <sharingOwnerRules>
+        <fullName>Opportunity_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Opportunity_Sharing</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Manager</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>Manager</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

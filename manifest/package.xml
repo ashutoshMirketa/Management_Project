@@ -10,5 +10,9 @@
 		<members>Salesperson</members>
 		<name>Role</name>
 	</types>
+	<types>
+		<members>Opportunity</members>
+		<name>SharingRules</name>
+	</types>
 	<version>55.0</version>
 </Package>
