@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send email to primary contact after 10 days of due date to notify them of the outstanding amount on the invoice.</description>
+        <name>Send_email</name>
+        <label>Send email</label>
+        <locationX>242</locationX>
+        <locationY>528</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>EmailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.Account__r.Primary_contact__r.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Paymentpending</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <description>Check if status is pending, paid, not paid</description>
+        <name>Check_Status</name>
+        <label>Check Status</label>
+        <locationX>374</locationX>
+        <locationY>288</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Status</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Status</targetReference>
+            </connector>
+            <label>Status</label>
+        </rules>
+    </decisions>
+    <description>Send email to primary contact 10 days after the invoice due date</description>
+    <environments>Default</environments>
+    <interviewLabel>Send email {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send email to primary contact</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Set status to not paid</description>
+        <name>Set_Status</name>
+        <label>Set Status</label>
+        <locationX>242</locationX>
+        <locationY>408</locationY>
+        <connector>
+            <targetReference>Send_email</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Not Paid</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <object>Invoice__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>trigger_10_days_after_due_date</name>
+            <connector>
+                <targetReference>Check_Status</targetReference>
+            </connector>
+            <label>trigger 10 days after due date</label>
+            <offsetNumber>10</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>Due_Date__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <description>Email body for primary contact</description>
+        <name>EmailBody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Dear {!$Record.Account__r.Primary_contact__r.FirstName},
+
+I hope this email finds you well. We wanted to reach out to you regarding the payment for Invoice {!$Record.Name} which was due on {!$Record.Due_Date__c}.
+
+Unfortunately, we have not yet received the payment for this invoice, and we wanted to remind you that the outstanding amount {!$Record.Amount_Due__c} is still pending. As per our payment terms, we kindly request that all payments be made on or before the due date.
+
+To avoid any further delays or issues, we kindly request that you settle the outstanding amount as soon as possible. Please be advised that the status of the invoice has been modified to &apos;Not Paid&apos; in our records.
+
+If you have any questions or concerns regarding this matter, please do not hesitate to contact us. We would be more than happy to assist you.
+
+Thank you for your attention to this matter.
+
+Best regards,</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Email subject</description>
+        <name>Paymentpending</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Outstanding payment- Still pending.</text>
+    </textTemplates>
+</Flow>

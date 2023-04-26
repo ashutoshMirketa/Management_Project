@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Outstanding_payments__c</fullName>
+    <description>outstanding payments represent the unpaid balance on an invoice.</description>
+    <externalId>false</externalId>
+    <label>Outstanding payments</label>
+    <summarizedField>Invoice__c.Amount_Due__c</summarizedField>
+    <summaryFilterItems>
+        <field>Invoice__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Not Paid</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Invoice__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Pending</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Invoice__c.Account__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <type>Summary</type>
+</CustomField>

@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
-		<members>Manager</members>
-		<members>Salesperson</members>
-		<name>Profile</name>
+		<members>Account.Outstanding_payments__c</members>
+		<members>Account.Total_sales_revenue__c</members>
+		<name>CustomField</name>
 	</types>
 	<types>
-		<members>Manager</members>
-		<members>Salesperson</members>
-		<name>Role</name>
-	</types>
-	<types>
-		<members>Opportunity</members>
-		<name>SharingRules</name>
+		<members>Send_Email_10_days_prior</members>
+		<members>Send_email_to_primary_contact</members>
+		<name>Flow</name>
 	</types>
 	<version>55.0</version>
 </Package>
