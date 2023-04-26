@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_sales_revenue__c</fullName>
+    <description>Sum of the Amount field for all related Opportunities.</description>
+    <externalId>false</externalId>
+    <label>Total sales revenue</label>
+    <summarizedField>Opportunity.Amount</summarizedField>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <type>Summary</type>
+</CustomField>
