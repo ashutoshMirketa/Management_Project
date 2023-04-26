@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>follow up with the customer for the payment for unpaid invoice.</description>
+        <name>follow_up_with_the_customer_for_the_payment</name>
+        <label>follow up with the customer for the payment</label>
+        <locationX>242</locationX>
+        <locationY>408</locationY>
+        <actionName>NewTask</actionName>
+        <actionType>quickAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>OwnerId</name>
+            <value>
+                <elementReference>$Record.Account__r.Owner.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>Subject</name>
+            <value>
+                <elementReference>Followup</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <name>If_invoice_is_not_paid</name>
+        <label>If invoice is not paid</label>
+        <locationX>374</locationX>
+        <locationY>288</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Create_a_task</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Not Paid</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>follow_up_with_the_customer_for_the_payment</targetReference>
+            </connector>
+            <label>Create a task</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Creating  a task {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Creating  a task</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <object>Invoice__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>X30_days_after_due_date</name>
+            <connector>
+                <targetReference>If_invoice_is_not_paid</targetReference>
+            </connector>
+            <label>30 days after due date</label>
+            <offsetNumber>30</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>Due_Date__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>Followup</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Follow up with customer regarding payment.</text>
+    </textTemplates>
+</Flow>
