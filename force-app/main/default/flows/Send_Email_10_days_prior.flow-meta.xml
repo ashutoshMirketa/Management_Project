@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send email to the primary contact Ten days prior to the invoice due date to remind them about the outstanding amount on the invoice.</description>
+        <name>Send_Email</name>
+        <label>Send Email</label>
+        <locationX>308</locationX>
+        <locationY>288</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>EmailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>ReceiverEmail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>Senderemail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>EmailSubject</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <description>Flow to send email to primary contact 10 days prior to the invoice due date.</description>
+    <environments>Default</environments>
+    <interviewLabel>Send Email 10 days prior {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send Email 10 days prior</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <object>Invoice__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>Trigger_10_days_prior_to_the_invoice_due_date</name>
+            <connector>
+                <targetReference>Send_Email</targetReference>
+            </connector>
+            <label>Trigger 10 days prior to the invoice due date</label>
+            <offsetNumber>-10</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>Due_Date__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <description>Email body to send to primary contact</description>
+        <name>EmailBody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Dear {!$Record.Account__r.Primary_contact__r.Name},
+
+We hope this email finds you well. We wanted to remind you that there is an outstanding amount due on Invoice {!$Record.Name}, and the outstanding amount which is due is {!$Record.Amount_Due__c}.
+
+As a valued customer, we appreciate your business and want to ensure that you are aware of any outstanding payments. Please let us know if there is anything we can do to assist you in making this payment.
+
+Thank you for your prompt attention to this matter. If you have any questions, please do not hesitate to contact us.</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Email subject for primary contact.</description>
+        <name>EmailSubject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Outstanding payment of invoices</text>
+    </textTemplates>
+    <variables>
+        <name>ReceiverEmail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Record.Account__r.Primary_contact__r.Email</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <name>Senderemail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>ridham.godha18@gmail.com</stringValue>
+        </value>
+    </variables>
+</Flow>
