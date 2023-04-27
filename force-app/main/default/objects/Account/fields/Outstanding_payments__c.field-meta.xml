@@ -7,13 +7,8 @@
     <summarizedField>Invoice__c.Amount_Due__c</summarizedField>
     <summaryFilterItems>
         <field>Invoice__c.Status__c</field>
-        <operation>equals</operation>
-        <value>Not Paid</value>
-    </summaryFilterItems>
-    <summaryFilterItems>
-        <field>Invoice__c.Status__c</field>
-        <operation>equals</operation>
-        <value>Pending</value>
+        <operation>notEqual</operation>
+        <value>Paid</value>
     </summaryFilterItems>
     <summaryForeignKey>Invoice__c.Account__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
