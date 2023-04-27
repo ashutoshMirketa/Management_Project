@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>There_should_be_a_Primary_Contact</fullName>
+    <active>true</active>
+    <errorConditionFormula>Account.Primary_contact__c = null</errorConditionFormula>
+    <errorDisplayField>AccountId</errorDisplayField>
+    <errorMessage>There is No Primary Contact on this Account. Please Select an Account with Primary Contact</errorMessage>
+</ValidationRule>
