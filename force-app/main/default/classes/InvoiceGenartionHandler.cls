@@ -10,31 +10,34 @@ public with sharing class InvoiceGenartionHandler {
         }
 
         
-        List<OpportunityLineItem> OpportunityList = [SELECT Name, Product2.Name, Quantity, UnitPrice FROM OpportunityLineItem WHERE opportunityId =: opportunityId];
+        List<OpportunityLineItem> productList = [SELECT Name, Product2.Name, Quantity, UnitPrice FROM OpportunityLineItem WHERE opportunityId =: opportunityId];
 
 
         Id primaryContactId = [SELECT Primary_contact__c FROM Account WHERE Id =: accountId].Primary_contact__c;
-        Contact primaryContact = [SELECT Id, Email FROM Contact Where Id =: primaryContactId];
+        Contact primaryContact = [SELECT Id, Name, Email FROM Contact Where Id =: primaryContactId];
+
 
         List<Messaging.SingleEmailMessage> emailList = new List<Messaging.SingleEmailMessage>();
 
 
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 
-        mail.setSubject('Invoice Generated');
+        mail.setSubject('Invoice for products purchased');
 
         List<String> toAddress = new List<String>();
         toAddress.add(primaryContact.Email);
         mail.setToAddresses( toAddress );
 
-        String table = '<table border="1"><thead><tr><th>Product Name</th><th>Price</th><th>Quantity</th></tr></thead><tbody>';
+        String mailBody = 'Hey ' + primaryContact.Name + ', <br> Here is a list of items purchased by your company: <br><br>';
 
-        for(OpportunityLineItem opp:OpportunityList){
-            table+='<tr><td>' + opp.Product2.Name + '</td><td>' + opp.UnitPrice + '</td><td>' + opp.Quantity + '</td></tr>';
+        mailBody += '<table border="1"><thead><tr><th>Product Name</th><th>Price</th><th>Quantity</th></tr></thead><tbody>';
+
+        for(OpportunityLineItem opp : productList){
+            mailBody += '<tr><td>' + opp.Product2.Name + '</td><td>' + opp.UnitPrice + '</td><td>' + opp.Quantity + '</td></tr>';
         }
 
-        table += '</tbody></table>';
-        mail.setHtmlBody(table);
+        mailBody += '</tbody></table><br><br>Thankyou for the Purchase.';
+        mail.setHtmlBody(mailBody);
         emailList.add(mail);
 
 
