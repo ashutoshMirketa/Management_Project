@@ -71,7 +71,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <object>Invoice__c</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <scheduledPaths>
             <name>X30_days_after_due_date</name>
             <connector>
