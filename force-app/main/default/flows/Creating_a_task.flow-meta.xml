@@ -16,6 +16,24 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>ActivityDate</name>
+            <value>
+                <elementReference>$Record.Due_Date__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>WhoId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>Status</name>
+            <value>
+                <elementReference>$Record.Status__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>Subject</name>
             <value>
                 <elementReference>Followup</elementReference>
