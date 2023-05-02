@@ -4,6 +4,12 @@ private class opportunityTriggerTest {
     private static void opportunityTriggerTest() {
         Account acc = new Account(Name = 'Team 4');
         insert acc;
+        
+        Contact testContact = new Contact(LastName = 'test Contact', AccountId = acc.Id);
+        insert testContact;
+        
+        acc.Primary_contact__c = testContact.Id;
+        update acc;
 
         Opportunity opportunity1 = new Opportunity(
             Name = 'opp1',

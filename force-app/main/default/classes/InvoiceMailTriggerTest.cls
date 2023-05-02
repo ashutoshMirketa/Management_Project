@@ -7,15 +7,15 @@ private class InvoiceMailTriggerTest {
         insert testAccount;
 
         Id standardPricebook = Test.getStandardPricebookId();
+        
+        Contact testContact = new Contact(LastName = 'test Contact', AccountId = testAccount.Id);
+        insert testContact;
+        
+        testAccount.Primary_contact__c = testContact.Id;
+        update testAccount;
 
         Opportunity testOpportunity = new Opportunity(Name = 'test Opportunity', AccountId = testAccount.Id, CloseDate = Date.today() + 3, Pricebook2Id = standardPricebook, StageName = 'Prospecting');
         insert testOpportunity;
-
-        Contact testContact = new Contact(LastName = 'test Contact', AccountId = testAccount.Id);
-        insert testContact;
-
-        testAccount.Primary_contact__c = testContact.Id;
-        update testAccount;
 
         Product2 testProduct = new Product2(Name = 'test Product', IsActive = true);
         insert testProduct;
