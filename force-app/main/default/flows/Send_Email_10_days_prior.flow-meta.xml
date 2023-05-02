@@ -4,8 +4,8 @@
         <description>Send email to the primary contact Ten days prior to the invoice due date to remind them about the outstanding amount on the invoice.</description>
         <name>Send_Email</name>
         <label>Send Email</label>
-        <locationX>308</locationX>
-        <locationY>288</locationY>
+        <locationX>242</locationX>
+        <locationY>408</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -22,12 +22,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>senderAddress</name>
-            <value>
-                <elementReference>Senderemail</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>emailSubject</name>
             <value>
                 <elementReference>EmailSubject</elementReference>
@@ -35,6 +29,28 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
+    <decisions>
+        <name>Check_if_unpaid</name>
+        <label>Check if unpaid</label>
+        <locationX>374</locationX>
+        <locationY>288</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Unpaid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Paid</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Email</targetReference>
+            </connector>
+            <label>Unpaid</label>
+        </rules>
+    </decisions>
     <description>Flow to send email to primary contact 10 days prior to the invoice due date.</description>
     <environments>Default</environments>
     <interviewLabel>Send Email 10 days prior {!$Flow.CurrentDateTime}</interviewLabel>
@@ -62,11 +78,11 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <object>Invoice__c</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <scheduledPaths>
             <name>Trigger_10_days_prior_to_the_invoice_due_date</name>
             <connector>
-                <targetReference>Send_Email</targetReference>
+                <targetReference>Check_if_unpaid</targetReference>
             </connector>
             <label>Trigger 10 days prior to the invoice due date</label>
             <offsetNumber>-10</offsetNumber>
@@ -78,10 +94,15 @@
     </start>
     <status>Active</status>
     <textTemplates>
+        <name>CustomerName</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>{!$Record.Account__r.Primary_contact__r.Name}</text>
+    </textTemplates>
+    <textTemplates>
         <description>Email body to send to primary contact</description>
         <name>EmailBody</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Dear {!$Record.Account__r.Primary_contact__r.Name},
+        <text>Dear {!$Record.Account__r.Primary_contact__r.FirstName},
 
 We hope this email finds you well. We wanted to remind you that there is an outstanding amount due on Invoice {!$Record.Name}, and the outstanding amount which is due is {!$Record.Amount_Due__c}.
 
